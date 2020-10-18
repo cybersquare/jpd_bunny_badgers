@@ -120,6 +120,7 @@ while running:
     font = pygame.font.Font(None, 24)
     # Display accuracy
     survivedtext = font.render(str((90000-pygame.time.get_ticks())/60000)+":"+str((90000-pygame.time.get_ticks())/1000%60).zfill(2), True, (0,0,0))
+    # survivedtext = font.render(str(acc['hit']), True, (0,0,0)) # Uncomment this line and comment line 122 to display score instead of accuracy
     textRect = survivedtext.get_rect()
     textRect.topright=[635,5]
     screen.blit(survivedtext, textRect)
