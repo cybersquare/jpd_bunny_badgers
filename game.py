@@ -9,12 +9,12 @@ pygame.init()
 width, height = 640, 480
 screen=pygame.display.set_mode((width, height))
 keys = [False, False, False, False]
-playerpos=[100,100]
+player_pos=[100,100]
 acc={"hit":0, "arrows":0}
 arrows=[]
-badtimer=100
-badtimer1=0
-badguys=[[640,100]]
+badger_timer=100
+badger_timer1=0
+badger_guys=[[640,100]]
 healthvalue=194
 pygame.mixer.init()
 
@@ -23,8 +23,8 @@ player = pygame.image.load("resources/images/dude.png")
 grass = pygame.image.load("resources/images/grass.png")
 castle = pygame.image.load("resources/images/castle.png")
 arrow = pygame.image.load("resources/images/bullet.png")
-badguyimg1 = pygame.image.load("resources/images/badguy.png")
-badguyimg=badguyimg1
+badger_guyimg1 = pygame.image.load("resources/images/badguy.png")
+badger_guyimg=badger_guyimg1
 healthbar = pygame.image.load("resources/images/healthbar.png")
 health = pygame.image.load("resources/images/health.png")
 gameover = pygame.image.load("resources/images/gameover.png")
@@ -44,7 +44,7 @@ pygame.mixer.music.set_volume(0.25)
 running = 1
 exitcode = 0
 while running:
-    badtimer-=1
+    badger_timer-=1
     # 5 - clear the screen before drawing it again
     screen.fill(0)
     # 6 - draw the player on the screen at X:100, Y:100
@@ -57,10 +57,10 @@ while running:
     screen.blit(castle,(0,345 ))
     # 6.1 - Set player position and rotation
     position = pygame.mouse.get_pos()
-    angle = math.atan2(position[1]-(playerpos[1]+32),position[0]-(playerpos[0]+26))
-    playerrot = pygame.transform.rotate(player, 360-angle*57.29)
-    playerpos1 = (playerpos[0]-playerrot.get_rect().width/2, playerpos[1]-playerrot.get_rect().height/2)
-    screen.blit(playerrot, playerpos1) 
+    angle = math.atan2(position[1]-(player_pos[1]+32),position[0]-(player_pos[0]+26))
+    player_rotn = pygame.transform.rotate(player, 360-angle*57.29)
+    player_pos1 = (player_pos[0]-player_rotn.get_rect().width/2, player_pos[1]-player_rotn.get_rect().height/2)
+    screen.blit(player_rotn, player_pos1) 
     # 6.2 - Draw arrows
     for bullet in arrows:
         index=0
@@ -75,30 +75,30 @@ while running:
             arrow1 = pygame.transform.rotate(arrow, 360-projectile[0]*57.29)
             screen.blit(arrow1, (projectile[1], projectile[2]))
     # 6.3 - Draw badgers
-    if badtimer==0:
+    if badger_timer==0:
         # Starting position of the badger
-        badguys.append([640, random.randint(50,430)])
-        badtimer=100-(badtimer1*2)
+        badger_guys.append([640, random.randint(50,430)])
+        badger_timer=100-(badger_timer1*2)
         # Frequency of apperaing badgers
-        if badtimer1>=35:
-            badtimer1=35
+        if badger_timer1>=35:
+            badger_timer1=35
         else:
-            badtimer1+=5
+            badger_timer1+=5
     index=0
-    for badguy in badguys:
-        if badguy[0]<-64:
-            badguys.pop(index)
+    for badger_guy in badger_guys:
+        if badger_guy[0]<-64:
+            badger_guys.pop(index)
         # Speed of the badger
-        badguy[0]-=7
+        badger_guy[0]-=7
         # 6.3.1 - Attack castle
-        badrect=pygame.Rect(badguyimg.get_rect())
-        badrect.top=badguy[1]
-        badrect.left=badguy[0]
+        badger_rect=pygame.Rect(badger_guyimg.get_rect())
+        badger_rect.top=badger_guy[1]
+        badger_rect.left=badger_guy[0]
         # Hit on castle
-        if badrect.left<64:
+        if badger_rect.left<64:
             hit.play()
             healthvalue -= random.randint(5,20)
-            badguys.pop(index)
+            badger_guys.pop(index)
         #6.3.2 - Check for collisions
         index1=0
         for bullet in arrows:
@@ -106,16 +106,16 @@ while running:
             bullrect.left=bullet[1]
             bullrect.top=bullet[2]
             # Arrow hits badger
-            if badrect.colliderect(bullrect):
+            if badger_rect.colliderect(bullrect):
                 enemy.play()
                 acc['hit']+=1
-                badguys.pop(index)
+                badger_guys.pop(index)
                 arrows.pop(index1)
             index1+=1
-        # 6.3.3 - Next bad guy
+        # 6.3.3 - Next badger guy
         index+=1
-    for badguy in badguys:
-        screen.blit(badguyimg, badguy)
+    for badger_guy in badger_guys:
+        screen.blit(badger_guyimg, badger_guy)
     # 6.4 - Draw clock
     font = pygame.font.Font(None, 24)
     # Display accuracy
@@ -159,17 +159,17 @@ while running:
             shoot.play()
             position=pygame.mouse.get_pos()
             acc['arrows']+=1
-            arrows.append([math.atan2(position[1]-(playerpos1[1]+32),position[0]-(playerpos1[0]+26)),playerpos1[0]+32,playerpos1[1]+32])
+            arrows.append([math.atan2(position[1]-(player_pos1[1]+32),position[0]-(player_pos1[0]+26)),player_pos1[0]+32,player_pos1[1]+32])
                 
     # 9 - Move player
     if keys[0]:
-        playerpos[1]-=5
+        player_pos[1]-=5
     elif keys[2]:
-        playerpos[1]+=5
+        player_pos[1]+=5
     if keys[1]:
-        playerpos[0]-=5
+        player_pos[0]-=5
     elif keys[3]:
-        playerpos[0]+=5
+        player_pos[0]+=5
 
     #10 - Win/Lose check
     if pygame.time.get_ticks()>=90000:
