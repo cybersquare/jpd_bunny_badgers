@@ -15,7 +15,7 @@ arrows=[]
 badger_timer=100
 badger_timer1=0
 badger_guys=[[640,100]]
-healthvalue=194
+healthvalue=194 
 pygame.mixer.init()
 
 # 3 - Load image
