@@ -5,7 +5,7 @@ import math
 import random
 
 # 2 - Initialize the game
-pygame.init()
+pygame.init() 
 width, height = 640, 480
 screen=pygame.display.set_mode((width, height))
 keys = [False, False, False, False]
